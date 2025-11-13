@@ -3,9 +3,10 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { LayoutDashboard, LogOut, Grip } from "lucide-react";
+import { LayoutDashboard, Grip } from "lucide-react";
 import Image from "next/image";
 import logoImage from "@../../../public/Images/sam-logo.jpg";
+import { LogoutModal } from "../Reusealbe/LogoutModal";
 
 const navigation = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
@@ -79,13 +80,7 @@ export function Sidebar() {
         })}
       </nav>
 
-      {/* Logout fixed at bottom */}
-      <div className="p-3">
-        <div className="flex items-center justify-start space-y-1 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 transition-all duration-200 hover:bg-slate-600/50 hover:text-white cursor-pointer">
-          <LogOut className="h-5 w-5" />
-          <span className="font-normal text-base leading-[120%]">Log Out</span>
-        </div>
-      </div>
+      <LogoutModal />
     </div>
   );
 }
