@@ -3,15 +3,15 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { LayoutDashboard, LogOut, Grip, ShoppingBasket } from "lucide-react";
+import { LayoutDashboard, LogOut, Grip } from "lucide-react";
 import Image from "next/image";
-import logoImage from "@/../../public/Images/sam-logo.jpg";
+import logoImage from "@../../../public/Images/sam-logo.jpg";
 
 const navigation = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
   {
-    name: "Requested Products",
-    href: "/requested-product",
+    name: "User Management",
+    href: "/user-management",
     icon: LayoutDashboard,
   },
   {
@@ -20,34 +20,28 @@ const navigation = [
     icon: LayoutDashboard,
   },
   { name: "Main Category", href: "/category", icon: Grip },
-  { name: "Sub Category", href: "/sub-category", icon: ShoppingBasket },
-  { name: "SR Category List", href: "/sr-category", icon: ShoppingBasket },
-  {
-    name: "SR Sub Category List",
-    href: "/sr-sub-category",
-    icon: ShoppingBasket,
-  },
 ];
 
 export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <div className="flex h-screen sticky bottom-0 top-0 w-[312px] flex-col bg-[#070E28] z-50">
+    <div className="flex h-screen sticky bottom-0 top-0 w-[350px] flex-col bg-[#070E28] z-50">
       {/* Logo */}
-      <div className="flex items-center justify-start shadow-md ml-3 h-[80px] mt-3">
-        <div className="text-2xl flex gap-1 font-bold text-blue-600 uppercase tracking-wider w-full">
-          <div className="">
+      <div className="h-[80px] flex items-center justify-start shadow-md ml-3">
+        <div className="text-2xl flex gap-1 font-bold text-blue-600 uppercase tracking-wider">
+          <div className="h-[50px] w-[200px]">
             <Image
               src={logoImage}
-              alt="Logo"
+              alt=""
               height={200}
               width={200}
-              className="h-full w-[90%] mx-auto object-cover rounded-md"
+              className="object-cover w-full h-full"
             />
           </div>
         </div>
       </div>
+
       {/* Navigation */}
       <nav className="flex-1 space-y-4 flex flex-col items-center justify-start px-3 overflow-y-auto mt-3">
         {navigation.map((item) => {
@@ -60,22 +54,22 @@ export function Sidebar() {
               key={item.name}
               href={item.href}
               className={cn(
-                "flex w-[90%] mx-auto items-center justify-start gap-2 space-y-1 rounded-lg px-3 py-3 text-sm font-medium transition-all duration-200",
+                "flex w-[90%] mx-auto items-center justify-start gap-2 space-y-1 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200",
                 isActive
-                  ? "bg-[#0D9488] text-white"
+                  ? "bg-white text-black"
                   : "text-slate-300 hover:bg-slate-600/50 hover:text-white"
               )}
             >
               <item.icon
                 className={cn(
                   "h-6 w-6 transition-colors duration-200",
-                  isActive ? "text-white" : ""
+                  isActive ? "text-black" : ""
                 )}
               />
               <span
                 className={cn(
-                  "font-semibold text-base leading-[150%] transition-colors duration-200 text-center",
-                  isActive ? "text-white font-medium" : ""
+                  "font-normal text-base leading-[120%] transition-colors duration-200 text-center",
+                  isActive ? "text-black font-medium" : ""
                 )}
               >
                 {item.name}
