@@ -19,7 +19,7 @@ const navigation = [
     href: "/listings-management",
     icon: LayoutDashboard,
   },
-  { name: "Main Category", href: "/category", icon: Grip },
+  { name: "Payments & Subscri..", href: "/payments", icon: Grip },
 ];
 
 export function Sidebar() {
