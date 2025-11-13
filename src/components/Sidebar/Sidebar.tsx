@@ -15,8 +15,8 @@ const navigation = [
     icon: LayoutDashboard,
   },
   {
-    name: "Approved Products",
-    href: "/approved-product",
+    name: "Listings Management",
+    href: "/listings-management",
     icon: LayoutDashboard,
   },
   { name: "Main Category", href: "/category", icon: Grip },
