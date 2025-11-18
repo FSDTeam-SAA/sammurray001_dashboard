@@ -1,6 +1,5 @@
 import Header from "@/components/Header/Header";
 import { Sidebar } from "@/components/Sidebar/Sidebar";
-// import AppProvider from "@/provider/AppProvider";
 import React from "react";
 
 function layout({ children }: { children: React.ReactNode }) {
@@ -10,9 +9,7 @@ function layout({ children }: { children: React.ReactNode }) {
       <div className="flex">
         <Sidebar />
         <div className="w-full mt-[80px] bg-[#F8F9FA]">
-          {/* <AppProvider> */}
             {children}
-            {/* </AppProvider> */}
         </div>
       </div>
     </>
