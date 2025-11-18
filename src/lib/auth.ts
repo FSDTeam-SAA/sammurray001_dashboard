@@ -18,7 +18,7 @@ export const authOptions: NextAuthOptions = {
         httpOnly: true,
         sameSite: "lax",
         path: "/",
-        secure: process.env.NODE_ENV === "production",
+        secure: false,
       },
     },
   },
@@ -52,15 +52,16 @@ export const authOptions: NextAuthOptions = {
           const response = await res.json();
 
           if (!res.ok || !response?.success) {
-            throw new Error(response?.message || "Login failed");
+            throw new Error(response?.message || "Invalid email or password");
           }
 
           const user = response.data.user;
 
-          // 🚫 ADD THIS: Only allow admins to log in
           if (user.role !== "ADMIN") {
             throw new Error("Access denied! Only admin can login.");
           }
+
+          console.log("response ke asa : ", response?.data?.accessToken);
 
           return {
             id: user._id,
@@ -109,7 +110,6 @@ export const authOptions: NextAuthOptions = {
         accessToken: token.accessToken,
         refreshToken: token.refreshToken,
       };
-
       return session;
     },
   },
