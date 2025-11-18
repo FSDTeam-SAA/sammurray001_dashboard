@@ -17,7 +17,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { MoreVertical, Edit, Trash, Search } from "lucide-react";
-import { ViewDetailsModal } from "@/components/Reusealbe/ViewDetailsModal";
+// import { ViewDetailsModal } from "@/components/Reusealbe/ViewDetailsModal";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -197,7 +197,7 @@ export default function ListingsManagement() {
                       </button>
                     </PopoverTrigger>
                     <PopoverContent className="w-28 p-0 border border-gray-200">
-                      <ViewDetailsModal />
+                      {/* <ViewDetailsModal /> */}
 
                       <button className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-gray-100 w-full">
                         <Edit className="h-4 w-4" /> Edit
