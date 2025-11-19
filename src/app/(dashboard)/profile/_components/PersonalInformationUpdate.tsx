@@ -49,7 +49,6 @@ function PersonalInformationUpdate() {
   const { data: session } = useSession();
   const TOKEN = session?.user?.accessToken;
 
-  // ===================== GET USER DATA ========================
   const { data: userData, isLoading } = useQuery<ApiResponse>({
     queryKey: ["user-data"],
     queryFn: async () => {
@@ -73,7 +72,7 @@ function PersonalInformationUpdate() {
     enabled: !!TOKEN,
   });
 
-  // ===================== FORM STATE ========================
+
   const [form, setForm] = useState<UserFormType>({
     fullName: "",
     email: "",
@@ -83,7 +82,7 @@ function PersonalInformationUpdate() {
     bio: "",
   });
 
-  // ===================== PREFILL FORM ========================
+
   useEffect(() => {
     if (userData?.data) {
       const phone: string = userData.data.phone || "";
@@ -106,7 +105,6 @@ function PersonalInformationUpdate() {
     }
   }, [userData]);
 
-  // ===================== UPDATE MUTATION ========================
   const updateMutation = useMutation({
     mutationFn: async (bodyData: UpdatePayload) => {
       const res = await fetch(
@@ -132,7 +130,7 @@ function PersonalInformationUpdate() {
     },
   });
 
-  // ===================== INPUT HANDLER ========================
+
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -142,7 +140,7 @@ function PersonalInformationUpdate() {
     }));
   };
 
-  // ===================== RESET FORM ========================
+
   const handleReset = () => {
     if (userData?.data) {
       const phone: string = userData.data.phone || "";
@@ -161,7 +159,7 @@ function PersonalInformationUpdate() {
     }
   };
 
-  // ===================== SUBMIT UPDATE ========================
+
   const handleUpdate = () => {
     updateMutation.mutate({
       fullName: form.fullName,
