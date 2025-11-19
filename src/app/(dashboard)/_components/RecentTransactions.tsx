@@ -14,6 +14,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 // ✅ TypeScript interfaces for API response
 interface User {
@@ -69,7 +70,7 @@ export default function RecentTransactions() {
     <div>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-[18px] font-semibold leading-[120%]">Recent Transactions</h1>
-        <h3 className="text-[#0D9488] cursor-pointer">See All</h3>
+        <Link href="/payments" className="text-[#0D9488] cursor-pointer">See All</Link>
       </div>
 
       <div className="w-full bg-white rounded-lg border border-gray-200">

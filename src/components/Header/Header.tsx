@@ -3,11 +3,22 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 export default function Header() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const avatarRef = useRef<HTMLDivElement>(null);
-
+const { data: session } = useSession();
+console.log(session)
+ const email = session?.user?.email || "";
+  const initials = email
+    ? email
+        .split("@")[0]
+        .split(/[\.\-_]/)
+        .map(word => word[0]?.toUpperCase())
+        .join("")
+        .slice(0, 2)
+    : "NA";
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -35,20 +46,20 @@ export default function Header() {
       <div className="flex items-center space-x-2"></div>
 
       <div className="relative flex items-center space-x-3">
-        <Link href="/profile">
-          <div
-            ref={avatarRef}
-            className="flex items-center space-x-2 text-white text-sm cursor-pointer hover:bg-white/10 rounded-lg px-2 py-1 transition-colors"
-            onClick={toggleDropdown}
-          >
-            {/* <span>{email}</span> */}
-            <Avatar className="h-8 w-8">
-              <AvatarImage src="/placeholder.svg?height=32&width=32" />
-              <AvatarFallback className="text-black">TA</AvatarFallback>
-            </Avatar>
-          </div>
-        </Link>
-      </div>
+      <Link href="/profile">
+        <div
+          ref={avatarRef}
+          className="flex items-center space-x-2 text-white text-sm cursor-pointer hover:bg-white/10 rounded-lg px-2 py-1 transition-colors"
+          onClick={toggleDropdown}
+        >
+          <span className="text-white">{email}</span>
+          <Avatar className="h-8 w-8">
+            <AvatarImage src={session?.user?.profileImage || "/placeholder.svg?height=32&width=32"} />
+            <AvatarFallback className="text-black">{initials}</AvatarFallback>
+          </Avatar>
+        </div>
+      </Link>
+    </div>
 
       {/* <ChangePasswordModal isOpen={isOpen} setIsOpen={setIsOpen} /> */}
     </div>
