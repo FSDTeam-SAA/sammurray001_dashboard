@@ -168,7 +168,7 @@ export default function Payments() {
                   </TableCell>
 
                   <TableCell className="text-sm text-gray-600">
-                    {transaction.subscription.type}
+                    {transaction.subscription?.type}
                   </TableCell>
 
                   <TableCell className="text-sm text-gray-900">

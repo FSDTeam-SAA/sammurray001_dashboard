@@ -106,7 +106,7 @@ export default function RecentTransactions() {
               </TableRow>
             )}
 
-            {!isLoading && !isError && transactionData?.map((transaction) => (
+            {!isLoading && !isError && transactionData?.slice(0,5)?.map((transaction) => (
               <TableRow key={transaction._id} className="border-b border-gray-100 hover:bg-gray-50">
                 <TableCell className="font-normal text-sm text-gray-900">{transaction._id}</TableCell>
                 <TableCell>
@@ -126,7 +126,7 @@ export default function RecentTransactions() {
                     </div>
                   </div>
                 </TableCell>
-                <TableCell className="text-sm text-gray-600">{transaction.subscription.type}</TableCell>
+                <TableCell className="text-sm text-gray-600">{transaction.subscription?.type}</TableCell>
                 <TableCell className="text-sm text-gray-900">{transaction.amount} {transaction.currency.toUpperCase()}</TableCell>
                 <TableCell>
                   <Badge

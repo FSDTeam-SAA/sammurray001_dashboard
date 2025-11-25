@@ -16,6 +16,11 @@ const navigation = [
     icon: LayoutDashboard,
   },
   {
+    name: "Agent Management",
+    href: "/agent-management",
+    icon: LayoutDashboard,
+  },
+  {
     name: "Listings Management",
     href: "/listings-management",
     icon: LayoutDashboard,
