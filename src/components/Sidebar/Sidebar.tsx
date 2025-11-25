@@ -26,6 +26,11 @@ const navigation = [
     icon: LayoutDashboard,
   },
   { name: "Payments & Subscri..", href: "/payments", icon: Grip },
+  {
+    name: "Property Type",
+    href: "/property-type",
+    icon: LayoutDashboard,
+  },
 ];
 
 export function Sidebar() {
