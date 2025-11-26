@@ -9,6 +9,7 @@ import { signIn } from "next-auth/react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import logoimage from '../../../../../public/Images/sammu-auth-image.png';
 
 interface LoginPageProps {
   onSwitchToRegister: () => void;
@@ -169,7 +170,7 @@ export default function LoginPage({
         <Image
         width={500}
         height={500}
-          src="/Images/sammu-auth-image.png"
+          src={logoimage}
           alt="Auth Image"
           className="w-full h-screen object-cover rounded-l-xl"
         />
