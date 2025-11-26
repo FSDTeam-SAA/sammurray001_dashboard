@@ -16,13 +16,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-  MoreVertical,
-  Edit,
-  Search,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
+import { MoreVertical, Edit, Search, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -33,7 +27,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { ViewDetailsModal } from "@/components/Reusealbe/ViewDetailsModal";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
@@ -50,35 +44,44 @@ interface User {
   verified?: boolean;
 }
 
+interface UserResponse {
+  statusCode: number;
+  success: boolean;
+  message: string;
+  meta: {
+    total: number;
+    page: number;
+    limit: number;
+  };
+  data: User[];
+}
+
 export default function UserManagement() {
   const { data: session } = useSession();
   const TOKEN = session?.user?.accessToken;
-  const queryClient = useQueryClient();
 
   const [searchQuery, setSearchQuery] = useState("");
   const [userRole, setUserRole] = useState("all-role");
-
-  // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
   const {
-    data: usersData,
+    data: usersResponse,
     isLoading,
     isError,
-  } = useQuery<User[]>({
-    queryKey: ["userData", searchQuery, userRole],
+    refetch,
+  } = useQuery<UserResponse>({
+    queryKey: ["userData", searchQuery, userRole, currentPage],
     queryFn: async () => {
       const params = new URLSearchParams();
       if (searchQuery) params.append("searchTerm", searchQuery);
       if (userRole !== "all-role") params.append("role", userRole);
+      params.append("page", currentPage.toString());
+      params.append("limit", itemsPerPage.toString());
 
       const res = await fetch(
-        `${
-          process.env.NEXT_PUBLIC_BACKEND_API_URL
-        }/user/all-user?${params.toString()}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/user/all-user?${params.toString()}`,
         {
-          method: "GET",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${TOKEN}`,
@@ -86,8 +89,8 @@ export default function UserManagement() {
         }
       );
 
-      const json = await res.json();
-      return json.data as User[];
+      if (!res.ok) throw new Error("Failed to fetch users");
+      return res.json();
     },
     enabled: !!TOKEN,
   });
@@ -105,58 +108,52 @@ export default function UserManagement() {
       );
       if (!res.ok) throw new Error("Failed to delete user");
 
-      queryClient.invalidateQueries({ queryKey: ["userData"] });
       toast.success("User Deleted Successfully!");
+      refetch();
     } catch (err) {
       console.error(err);
+      toast.error("Failed to delete user");
     }
   };
 
+  const totalPages = usersResponse
+    ? Math.ceil(usersResponse.meta.total / itemsPerPage)
+    : 1;
+
   const skeletonRows = Array.from({ length: 3 });
-
-  // Slice users for current page
-  const paginatedData = usersData?.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-
-  const totalPages = usersData ? Math.ceil(usersData.length / itemsPerPage) : 1;
 
   return (
     <div>
       {/* Search and Filters */}
-      <div className="w-full bg-gray-50 py-10">
-        <div className="flex items-center gap-3">
-          <div className="flex-none w-[400px] relative">
-            <Input
-              type="text"
-              placeholder="Search by user name"
-              className="w-full h-[50px] pr-24"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <Button className="absolute right-1 top-1/2 -translate-y-1/2 bg-teal-600 hover:bg-teal-700 h-10">
-              <Search className="w-4 h-4 mr-2" />
-              Search
-            </Button>
-          </div>
+      <div className="w-full bg-gray-50 py-10 flex items-center gap-3">
+        <div className="flex-none w-[400px] relative">
+          <Input
+            type="text"
+            placeholder="Search by user name"
+            className="w-full h-[50px] pr-24"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <Button
+            className="absolute right-1 top-1/2 -translate-y-1/2 bg-teal-600 hover:bg-teal-700 h-10"
+            onClick={() => setCurrentPage(1)}
+          >
+            <Search className="w-4 h-4 mr-2" /> Search
+          </Button>
+        </div>
 
-          <div className="ml-auto flex items-center gap-3">
-            <Select
-              value={userRole}
-              onValueChange={(value) => setUserRole(value)}
-            >
-              <SelectTrigger className="w-[140px]">
-                <SelectValue placeholder="All Role" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all-role">All Role</SelectItem>
-                <SelectItem value="ADMIN">Admin</SelectItem>
-                <SelectItem value="TENANT">Tenant</SelectItem>
-                <SelectItem value="SUPPLIER">Supplier</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+        <div className="ml-auto flex items-center gap-3">
+          <Select value={userRole} onValueChange={(value) => setUserRole(value)}>
+            <SelectTrigger className="w-[140px]">
+              <SelectValue placeholder="All Role" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all-role">All Role</SelectItem>
+              <SelectItem value="ADMIN">Admin</SelectItem>
+              <SelectItem value="TENANT">Tenant</SelectItem>
+              <SelectItem value="SUPPLIER">Supplier</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
 
@@ -208,7 +205,7 @@ export default function UserManagement() {
 
             {!isLoading &&
               !isError &&
-              paginatedData?.map((user) => (
+              usersResponse?.data.map((user) => (
                 <TableRow
                   key={user._id}
                   className="border-b border-gray-100 hover:bg-gray-50"
@@ -216,10 +213,7 @@ export default function UserManagement() {
                   <TableCell className="font-normal text-sm text-gray-900">
                     <div className="flex items-center gap-3">
                       <Avatar className="h-10 w-10">
-                        <AvatarImage
-                          src={user.profileImage ?? ""}
-                          alt={user.fullName}
-                        />
+                        <AvatarImage src={user.profileImage ?? ""} alt={user.fullName} />
                         <AvatarFallback className="bg-purple-100 text-purple-600">
                           {user.fullName
                             .split(" ")
@@ -231,16 +225,12 @@ export default function UserManagement() {
                         <span className="text-sm font-medium text-gray-900">
                           {user.fullName}
                         </span>
-                        <span className="text-xs text-gray-500">
-                          {user.email}
-                        </span>
+                        <span className="text-xs text-gray-500">{user.email}</span>
                       </div>
                     </div>
                   </TableCell>
 
-                  <TableCell className="text-sm text-gray-600">
-                    {user.role}
-                  </TableCell>
+                  <TableCell className="text-sm text-gray-600">{user.role}</TableCell>
                   <TableCell className="text-sm text-gray-600">
                     {new Date(user.createdAt).toLocaleDateString()}
                   </TableCell>
@@ -281,11 +271,8 @@ export default function UserManagement() {
         </Table>
       </div>
 
-      {/* Pagination Buttons */}
       {/* Pagination */}
-
-      {/* Pagination Buttons */}
-      {usersData && usersData.length > itemsPerPage && (
+      {totalPages > 1 && (
         <div className="flex justify-end items-center gap-2 mt-4">
           <Button
             size="sm"
@@ -325,9 +312,7 @@ export default function UserManagement() {
           <Button
             size="sm"
             variant="outline"
-            onClick={() =>
-              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-            }
+            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
             disabled={currentPage === totalPages}
           >
             <ChevronRight className="w-4 h-4" />
