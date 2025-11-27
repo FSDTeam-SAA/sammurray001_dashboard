@@ -72,7 +72,7 @@ export default function SubscriptionForm() {
   };
 
   return (
-    <div className="p-6 flex justify-center items-center min-h-screen">
+    <div className="p-6 flex justify-center items-center min-h-[90vh]">
       <Card className="w-[500px] bg-[#0E1635] border border-white/10 text-white shadow-xl rounded-2xl">
         <CardHeader className="pb-2">
           <CardTitle className="text-2xl font-semibold flex items-center gap-2">

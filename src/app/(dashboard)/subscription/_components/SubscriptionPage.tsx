@@ -25,19 +25,13 @@ const SubscriptionPage = () => {
   const TOKEN = session.data?.user?.accessToken || "";
 
   // Fetch subscription
-  const { data, isLoading, isError, refetch } = useQuery<{
-    data: Subscription[];
-  }>({
+  const { data, isLoading, isError, refetch } = useQuery<{ data: Subscription[] }>({
     queryKey: ["subscriptionData"],
     queryFn: async () => {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/subscription`,
-        {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/subscription`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
       if (!res.ok) throw new Error("Failed to fetch subscription data");
       return res.json();
     },
@@ -64,7 +58,6 @@ const SubscriptionPage = () => {
           body: JSON.stringify({ isActive: status }),
         }
       );
-
       if (!res.ok) throw new Error("Failed to update subscription status");
       return res.json();
     },
@@ -73,7 +66,7 @@ const SubscriptionPage = () => {
       toast.success("Subscription status updated successfully!");
     },
     onError: (err) => {
-      toast.info(err.message || "Something went wrong");
+      toast.error(err?.message || "Something went wrong");
     },
   });
 
@@ -99,7 +92,7 @@ const SubscriptionPage = () => {
   }
 
   return (
-    <div className="p-6 flex justify-center">
+    <div className="p-6 flex justify-center items-center min-h-[80vh]">
       <Card className="w-[450px] bg-[#0E1635] border border-white/10 text-white shadow-lg rounded-2xl relative">
         {/* EDIT BUTTON */}
         <Link href={`/subscription/${subscription._id}`}>
@@ -167,9 +160,7 @@ const SubscriptionPage = () => {
               <FileText className="w-4 h-4 text-purple-400" />
               Description
             </p>
-            <p className="text-base mt-1 leading-relaxed">
-              {subscription.discription.slice(0, 150)}...
-            </p>
+            <p className="text-base mt-1 leading-relaxed">{subscription.discription}</p>
           </div>
 
           {/* STATUS */}
@@ -188,17 +179,10 @@ const SubscriptionPage = () => {
 
           {/* SWITCH ON/OFF */}
           <div className="flex items-center justify-between bg-white/5 p-4 rounded-lg border border-white/10">
-            <Label
-              htmlFor="subscription-toggle"
-              className="text-sm font-medium text-white"
-            >
+            <Label htmlFor="subscription-toggle" className="text-sm font-medium text-white">
               Subscription Mode
             </Label>
-            <Switch
-              id="subscription-toggle"
-              checked={isActive}
-              onCheckedChange={handleToggle}
-            />
+            <Switch id="subscription-toggle" checked={isActive} onCheckedChange={handleToggle} />
           </div>
         </CardContent>
       </Card>
