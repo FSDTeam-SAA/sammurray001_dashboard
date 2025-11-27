@@ -4,21 +4,25 @@ import React, { useState, useRef, useEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+
+
 export default function Header() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const avatarRef = useRef<HTMLDivElement>(null);
-const { data: session } = useSession();
-console.log(session)
- const email = session?.user?.email || "";
+
+  const { data: session } = useSession();
+  const email = session?.user?.email || "";
+
   const initials = email
     ? email
         .split("@")[0]
         .split(/[\.\-_]/)
-        .map(word => word[0]?.toUpperCase())
+        .map((word) => word[0]?.toUpperCase())
         .join("")
         .slice(0, 2)
     : "NA";
+
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -41,27 +45,44 @@ console.log(session)
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
+
   return (
     <div className="fixed top-0 left-0 right-0 z-50 flex h-[80px] items-center justify-between px-6 bg-[#070E28] shadow-md">
       <div className="flex items-center space-x-2"></div>
 
-      <div className="relative flex items-center space-x-3">
-      <Link href="/profile">
-        <div
-          ref={avatarRef}
-          className="flex items-center space-x-2 text-white text-sm cursor-pointer hover:bg-white/10 rounded-lg px-2 py-1 transition-colors"
-          onClick={toggleDropdown}
-        >
-          <span className="text-white">{email}</span>
-          <Avatar className="h-8 w-8">
-            <AvatarImage src={session?.user?.profileImage || "/placeholder.svg?height=32&width=32"} />
-            <AvatarFallback className="text-black">{initials}</AvatarFallback>
-          </Avatar>
-        </div>
-      </Link>
-    </div>
+      {/* RIGHT SIDE */}
+      <div className="relative flex items-center space-x-5">
+        {/* <p className="text-white text-sm">Subscriptin Mood</p>
+        <div className="flex items-center space-x-2">
+          <Label htmlFor="header-switch" className="text-white text-sm">
+            NO
+          </Label>
+          <Switch id="header-switch" />
+          <Label htmlFor="header-switch" className="text-white text-sm">
+            OFF
+          </Label>
+        </div> */}
 
-      {/* <ChangePasswordModal isOpen={isOpen} setIsOpen={setIsOpen} /> */}
+        {/* Avatar */}
+        <Link href="/profile">
+          <div
+            ref={avatarRef}
+            className="flex items-center space-x-2 text-white text-sm cursor-pointer hover:bg-white/10 rounded-lg px-2 py-1 transition-colors"
+            onClick={toggleDropdown}
+          >
+            <span className="text-white">{email}</span>
+            <Avatar className="h-8 w-8">
+              <AvatarImage
+                src={
+                  session?.user?.profileImage ||
+                  "/placeholder.svg?height=32&width=32"
+                }
+              />
+              <AvatarFallback className="text-black">{initials}</AvatarFallback>
+            </Avatar>
+          </div>
+        </Link>
+      </div>
     </div>
   );
 }

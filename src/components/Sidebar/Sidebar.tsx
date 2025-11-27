@@ -25,10 +25,15 @@ const navigation = [
     href: "/listings-management",
     icon: LayoutDashboard,
   },
-  { name: "Payments & Subscri..", href: "/payments", icon: Grip },
+  { name: "Payments History", href: "/payments", icon: Grip },
   {
     name: "Property Type",
     href: "/property-type",
+    icon: LayoutDashboard,
+  },
+  {
+    name: "Subscription",
+    href: "/subscription",
     icon: LayoutDashboard,
   },
 ];
