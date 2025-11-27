@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { LayoutDashboard, Grip } from "lucide-react";
+import { LayoutDashboard, Grip, Users, UserCog, List, CircleDollarSign, MailCheck } from "lucide-react";
 import Image from "next/image";
 import logoImage from "@../../../public/Images/sam-logo.jpg";
 import { LogoutModal } from "../Reusealbe/LogoutModal";
@@ -13,28 +13,28 @@ const navigation = [
   {
     name: "User Management",
     href: "/user-management",
-    icon: LayoutDashboard,
+    icon: Users,
   },
   {
     name: "Agent Management",
     href: "/agent-management",
-    icon: LayoutDashboard,
+    icon: UserCog,
   },
   {
     name: "Listings Management",
     href: "/listings-management",
-    icon: LayoutDashboard,
+    icon: List,
   },
   { name: "Payments History", href: "/payments", icon: Grip },
   {
     name: "Property Type",
     href: "/property-type",
-    icon: LayoutDashboard,
+    icon: CircleDollarSign,
   },
   {
     name: "Subscription",
     href: "/subscription",
-    icon: LayoutDashboard,
+    icon: MailCheck,
   },
 ];
 
