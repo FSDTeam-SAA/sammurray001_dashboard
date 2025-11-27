@@ -284,6 +284,7 @@ export default function AgentManagement() {
                           variant="outline"
                           className="w-full"
                           onClick={() => handleApprove(user._id)}
+                          disabled={user.agentApproved === true} // disable if already approved
                         >
                           Approve
                         </Button>
@@ -292,6 +293,7 @@ export default function AgentManagement() {
                           variant="destructive"
                           className="w-full"
                           onClick={() => handleReject(user._id)}
+                          disabled={user.agentApproved === false} // disable if already rejected
                         >
                           Reject
                         </Button>

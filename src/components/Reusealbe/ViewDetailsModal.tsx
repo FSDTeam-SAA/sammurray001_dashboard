@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { X, MessageSquare, Edit } from "lucide-react";
+import { X, MessageSquare, Eye } from "lucide-react";
 import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
@@ -42,8 +42,8 @@ export function ViewDetailsModal({ userId }: { userId: string }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button className="flex gap-2 px-3 py-2 text-sm hover:bg-gray-100 w-full">
-          <Edit className="h-4 w-4" /> View
+        <button className="flex gap-2 px-3 py-2 text-sm hover:bg-gray-100 w-full border border-black rounded-md">
+          <Eye className="h-4 w-4" /> View
         </button>
       </DialogTrigger>
 

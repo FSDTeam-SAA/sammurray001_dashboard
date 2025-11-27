@@ -16,7 +16,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { MoreVertical, Edit, Search, ChevronLeft, ChevronRight } from "lucide-react";
+import { MoreVertical, Search, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -258,9 +258,6 @@ export default function UserManagement() {
                       </PopoverTrigger>
                       <PopoverContent className="w-28 p-0 border border-gray-200 flex flex-col gap-1">
                         <ViewDetailsModal userId={user._id} />
-                        <button className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-gray-100 w-full">
-                          <Edit className="h-4 w-4" /> Edit
-                        </button>
                         <DeleteModal onConfirm={() => handleDelete(user._id)} />
                       </PopoverContent>
                     </Popover>
